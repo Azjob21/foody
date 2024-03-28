@@ -58,11 +58,13 @@ class MainActivity : AppCompatActivity() {
                 // Auto mode is enabled
                 Toast.makeText(this, "Auto Mode Enabled", Toast.LENGTH_SHORT).show()
                 // Call AutoPlayer method or any other action you want
+                autoplay=true
 
             } else {
                 // Auto mode is disabled
                 Toast.makeText(this, "Auto Mode Disabled", Toast.LENGTH_SHORT).show()
                 // You may want to stop the auto-player or perform any other action
+                autoplay=false
             }
         }
         // Set background colors for endgameButton and restButton
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             restartGame()
         }
     }
-
+      var autoplay:Boolean=false
     fun restartGame() {
         // Reset background color and enable all buttons
         val buttons = listOf(bu1, bu2, bu3, bu4, bu5, bu6, bu7, bu8, bu9)
@@ -102,22 +104,22 @@ class MainActivity : AppCompatActivity() {
         val randomIndex =r.nextInt(emptycell.size-0)+0
         val cellid = emptycell[randomIndex]
         //button select
-        var buselect:Button?
-        when(cellid){
-            1->buselect=bu1
-            2->buselect=bu2
-            3->buselect=bu3
-            4->buselect=bu4
-            5->buselect=bu5
-            6->buselect=bu6
-            7->buselect=bu7
-            8->buselect=bu8
-            9->buselect=bu9
+        val buselect:Button?
+        buselect = when(cellid){
+            1-> bu1
+            2-> bu2
+            3-> bu3
+            4-> bu4
+            5-> bu5
+            6-> bu6
+            7-> bu7
+            8-> bu8
+            9-> bu9
             else->{
-                buselect=bu1
+                bu1
             }
         }
-
+        Log.e("cellid $cellid","buselect ${buselect.text}")
         playGame(cellid,buselect)
 
     }
@@ -157,10 +159,10 @@ class MainActivity : AppCompatActivity() {
 
                 // Check for winner after UI animation (if any) finishes
                 GlobalScope.launch(Dispatchers.Main) {
-                    delay(500) // Adjust delay as needed
-                    checkWinner()
-                    if (!checkWinner()) {
+                    delay(500) // Adjust delay as neede
+                    if (!checkWinner()&&autoplay) {
                         AutoPlayer()
+                        Log.e("autoplayer","autoplayerislaunching")
                     }
                 }
             } else {
@@ -178,6 +180,7 @@ class MainActivity : AppCompatActivity() {
                     checkWinner()
                 }
             }
+
         }
     }
 
